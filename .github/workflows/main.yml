@@ -52,13 +52,27 @@ jobs:
 
           CONFIG_PACKAGE_luci-app-openclash=y
 
+          CONFIG_PACKAGE_dnsmasq-full=y
+
           CONFIG_PACKAGE_ca-bundle=y
           CONFIG_PACKAGE_ca-certificates=y
+
           CONFIG_PACKAGE_wget-ssl=y
+          CONFIG_PACKAGE_curl=y
+
           CONFIG_PACKAGE_libopenssl=y
           CONFIG_PACKAGE_libopenssl-conf=y
 
-          CONFIG_PACKAGE_dnsmasq=y
+          CONFIG_PACKAGE_bash=y
+          CONFIG_PACKAGE_coreutils=y
+          CONFIG_PACKAGE_coreutils-nohup=y
+
+          CONFIG_PACKAGE_ip-full=y
+          CONFIG_PACKAGE_jsonfilter=y
+          CONFIG_PACKAGE_unzip=y
+
+          CONFIG_PACKAGE_ruby=y
+          CONFIG_PACKAGE_ruby-yaml=y
 
           CONFIG_PACKAGE_block-mount=y
 
@@ -68,10 +82,17 @@ jobs:
 
           CONFIG_PACKAGE_kmod-fs-ext4=y
 
+          CONFIG_PACKAGE_kmod-tun=y
+          CONFIG_PACKAGE_kmod-inet-diag=y
+
+          CONFIG_PACKAGE_kmod-nft-tproxy=y
+
+          CONFIG_PACKAGE_kmod-nf-conntrack=y
           CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
           CONFIG_PACKAGE_kmod-nfnetlink=y
-          CONFIG_PACKAGE_kmod-nf-conntrack=y
           CONFIG_PACKAGE_kmod-nf-nat=y
+
+          CONFIG_PACKAGE_openssh-sftp-server=y
 
           # CONFIG_TARGET_ROOTFS_INITRAMFS is not set
           EOF
@@ -130,11 +151,11 @@ jobs:
           DATE=$(date +%Y%m%d-%H%M)
 
           for f in *sysupgrade.bin; do
-            mv "$f" "newifi-d2-base-${DATE}.bin"
+            mv "$f" "newifi-d2-openclash-${DATE}.bin"
           done
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
-          name: newifi-d2-base-openwrt
+          name: newifi-d2-openclash
           path: openwrt/bin/targets/ramips/mt7621/*.bin
