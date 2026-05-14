@@ -21,7 +21,7 @@ jobs:
         run: |
           git clone https://github.com/openwrt/openwrt.git
           cd openwrt
-          git checkout openwrt-25.12
+          git checkout v25.12.3
 
       - name: Add OpenClash
         run: |
