@@ -59,7 +59,12 @@ jobs:
           CONFIG_PACKAGE_kmod-fs-exfat=y
           CONFIG_PACKAGE_kmod-fs-vfat=y
           CONFIG_PACKAGE_kmod-fs-ntfs3=y
-
+  
+          CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
+          CONFIG_PACKAGE_kmod-nfnetlink=y
+          CONFIG_PACKAGE_kmod-nf-conntrack=y
+          CONFIG_PACKAGE_kmod-nf-nat=y
+          
           CONFIG_PACKAGE_kmod-tun=y
           CONFIG_PACKAGE_kmod-dummy=y
           CONFIG_PACKAGE_kmod-inet-diag=y
