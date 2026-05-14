@@ -62,6 +62,7 @@ jobs:
           CONFIG_PACKAGE_luci-i18n-package-manager-zh-cn=y
 
           CONFIG_PACKAGE_luci-app-openclash=y
+          CONFIG_PACKAGE_luci-compat=y
 
           CONFIG_PACKAGE_dnsmasq-full=y
 
@@ -78,20 +79,22 @@ jobs:
           CONFIG_PACKAGE_coreutils=y
           CONFIG_PACKAGE_coreutils-nohup=y
 
+          CONFIG_PACKAGE_ipset=y
           CONFIG_PACKAGE_ip-full=y
+
           CONFIG_PACKAGE_jsonfilter=y
           CONFIG_PACKAGE_unzip=y
 
           CONFIG_PACKAGE_ruby=y
           CONFIG_PACKAGE_ruby-yaml=y
 
-          CONFIG_PACKAGE_block-mount=y
+          CONFIG_PACKAGE_iptables=y
+          CONFIG_PACKAGE_iptables-mod-tproxy=y
+          CONFIG_PACKAGE_iptables-mod-extra=y
 
-          CONFIG_PACKAGE_kmod-usb-core=y
-          CONFIG_PACKAGE_kmod-usb3=y
-          CONFIG_PACKAGE_kmod-usb-storage=y
+          CONFIG_PACKAGE_ip6tables-mod-nat=y
 
-          CONFIG_PACKAGE_kmod-fs-ext4=y
+          CONFIG_PACKAGE_kmod-ipt-nat=y
 
           CONFIG_PACKAGE_kmod-tun=y
           CONFIG_PACKAGE_kmod-inet-diag=y
@@ -102,6 +105,14 @@ jobs:
           CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
           CONFIG_PACKAGE_kmod-nfnetlink=y
           CONFIG_PACKAGE_kmod-nf-nat=y
+
+          CONFIG_PACKAGE_block-mount=y
+
+          CONFIG_PACKAGE_kmod-usb-core=y
+          CONFIG_PACKAGE_kmod-usb3=y
+          CONFIG_PACKAGE_kmod-usb-storage=y
+
+          CONFIG_PACKAGE_kmod-fs-ext4=y
 
           CONFIG_PACKAGE_openssh-sftp-server=y
 
