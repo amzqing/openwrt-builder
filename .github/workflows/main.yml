@@ -28,6 +28,7 @@ jobs:
       - name: Write config
         run: |
           cd openwrt
+
           cat > .config <<'EOF'
           CONFIG_TARGET_ramips=y
           CONFIG_TARGET_ramips_mt7621=y
@@ -53,10 +54,17 @@ jobs:
           CONFIG_PACKAGE_kmod-usb-core=y
           CONFIG_PACKAGE_kmod-usb3=y
           CONFIG_PACKAGE_kmod-usb-storage=y
+
           CONFIG_PACKAGE_kmod-fs-ext4=y
           CONFIG_PACKAGE_kmod-fs-exfat=y
           CONFIG_PACKAGE_kmod-fs-vfat=y
           CONFIG_PACKAGE_kmod-fs-ntfs3=y
+
+          CONFIG_PACKAGE_kmod-tun=y
+          CONFIG_PACKAGE_kmod-dummy=y
+          CONFIG_PACKAGE_kmod-inet-diag=y
+          CONFIG_PACKAGE_kmod-nft-socket=y
+          CONFIG_PACKAGE_kmod-nft-tproxy=y
           EOF
 
           mkdir -p files/etc/uci-defaults
@@ -87,6 +95,7 @@ jobs:
           EOF
 
           chmod +x files/etc/uci-defaults/99-custom-defaults
+
           make defconfig
 
       - name: Download packages
@@ -102,7 +111,9 @@ jobs:
       - name: Rename firmware
         run: |
           cd openwrt/bin/targets/ramips/mt7621
+
           DATE=$(date +%Y%m%d-%H%M)
+
           for f in *sysupgrade.bin; do
             mv "$f" "newifi-d2-base-${DATE}.bin"
           done
