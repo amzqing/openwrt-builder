@@ -1,4 +1,4 @@
-name: Build OpenWrt
+name: Build OpenWrt Stable OpenClash
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
         run: |
           git clone https://github.com/openwrt/openwrt.git
           cd openwrt
-          git checkout v25.12.3
+          git checkout v24.10.6
 
       - name: Add OpenClash
         run: |
@@ -55,6 +55,7 @@ jobs:
           CONFIG_TARGET_ramips_mt7621_DEVICE_d-team_newifi-d2=y
 
           CONFIG_PACKAGE_luci=y
+          CONFIG_PACKAGE_luci-ssl-openssl=y
 
           CONFIG_LUCI_LANG_zh_Hans=y
           CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
@@ -91,25 +92,25 @@ jobs:
           CONFIG_PACKAGE_iptables=y
           CONFIG_PACKAGE_iptables-mod-tproxy=y
           CONFIG_PACKAGE_iptables-mod-extra=y
-
           CONFIG_PACKAGE_ip6tables-mod-nat=y
 
+          CONFIG_PACKAGE_kmod-ipt-core=y
           CONFIG_PACKAGE_kmod-ipt-nat=y
+          CONFIG_PACKAGE_kmod-ipt-extra=y
+          CONFIG_PACKAGE_kmod-ipt-tproxy=y
+          CONFIG_PACKAGE_kmod-ipt-ipset=y
 
           CONFIG_PACKAGE_kmod-tun=y
           CONFIG_PACKAGE_kmod-inet-diag=y
 
           CONFIG_PACKAGE_kmod-nft-tproxy=y
+          CONFIG_PACKAGE_kmod-nft-compat=y
 
           CONFIG_PACKAGE_kmod-nf-conntrack=y
           CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
           CONFIG_PACKAGE_kmod-nfnetlink=y
           CONFIG_PACKAGE_kmod-nf-nat=y
-          CONFIG_PACKAGE_kmod-ipt-core=y
-          CONFIG_PACKAGE_kmod-ipt-extra=y
-          CONFIG_PACKAGE_kmod-ipt-tproxy=y
-          CONFIG_PACKAGE_kmod-ipt-ipset=y
-          CONFIG_PACKAGE_kmod-nft-compat=y
+
           CONFIG_PACKAGE_block-mount=y
 
           CONFIG_PACKAGE_kmod-usb-core=y
@@ -117,6 +118,8 @@ jobs:
           CONFIG_PACKAGE_kmod-usb-storage=y
 
           CONFIG_PACKAGE_kmod-fs-ext4=y
+          CONFIG_PACKAGE_e2fsprogs=y
+          CONFIG_PACKAGE_fdisk=y
 
           CONFIG_PACKAGE_openssh-sftp-server=y
 
@@ -130,8 +133,7 @@ jobs:
           cat > files/etc/uci-defaults/99-custom-defaults <<'EOF'
           #!/bin/sh
 
-          uci del network.lan.ipaddr 2>/dev/null
-          uci add_list network.lan.ipaddr='192.168.0.1/24'
+          uci set network.lan.ipaddr='192.168.0.1'
           uci commit network
 
           uci set network.wan.peerdns='0'
@@ -172,19 +174,21 @@ jobs:
           cd openwrt
           make -j$(nproc)
 
-      - name: Rename firmware
-        run: |
-          cd openwrt/bin/targets/ramips/mt7621
-          DATE=$(date +%Y%m%d-%H%M)
-          for f in *sysupgrade.bin; do
-            mv "$f" "newifi-d2-openclash-${DATE}.bin"
-          done
-      
       - name: Set build date
         id: builddate
         run: |
           echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
-      
+
+      - name: Rename firmware
+        run: |
+          cd openwrt/bin/targets/ramips/mt7621
+
+          DATE=${{ steps.builddate.outputs.date }}
+
+          for f in *sysupgrade.bin; do
+            mv "$f" "newifi-d2-openclash-${DATE}.bin"
+          done
+
       - name: Upload firmware
         uses: actions/upload-artifact@v4
         with:
